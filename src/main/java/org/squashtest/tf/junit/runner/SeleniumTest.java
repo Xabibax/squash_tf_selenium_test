@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -33,12 +34,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class SeleniumTest {
     private static WebDriver driver;
     WebElement element;
 
-    @BeforeClass
+    @Before
     public static void openBrowser(){
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -47,11 +49,15 @@ public class SeleniumTest {
     @Test
     public void canConnectToRedmine(){
 
+        FirefoxOptions options = new FirefoxOptions();
+        options.setHeadless(true);
+
+        driver = new FirefoxDriver(options);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         System.out.println("Starting test " + new Object(){}.getClass().getEnclosingMethod().getName());
-        System.out.println(driver);
-        driver = new FirefoxDriver();
-        System.out.println(driver);
-        driver.get("http://localhost:8000/");
+        //driver = new FirefoxDriver();
+        driver.get("http://10.0.2.2:8000/");
 
         // Page d'accueil //
         driver.findElement(By.className("login")).click();
@@ -63,9 +69,9 @@ public class SeleniumTest {
 
         // Page d'accueil //
         String loggedas = driver.findElement(By.id("loggedas")).getText();
-        String user = driver.findElement(By.className("user active")).getText();
+        System.out.println(loggedas);
 
-        Assert.assertSame("", "Connecté en tant que test_admin", loggedas + user);
+        Assert.assertEquals("", new String("Connecté en tant que test_admin"), loggedas);
 
         System.out.println("Ending test " + new Object(){}.getClass().getEnclosingMethod().getName());
     }
