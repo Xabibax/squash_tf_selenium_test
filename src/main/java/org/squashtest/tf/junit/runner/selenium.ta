@@ -1,0 +1,16 @@
+TEST :
+
+
+LOAD seleniumConf.properties AS seleniumConf.file
+CONVERT seleniumConf.file TO configuration.selenium AS seleniumConf
+EXECUTE launch WITH seleniumConf AS seleniumServer
+
+LOAD SeleniumTest AS seleniumTestSource
+CONVERT seleniumTestSource TO script.java (compile) AS seleniumTestCompiled
+CONVERT seleniumTestCompiled TO script.java.selenium2 (script) USING $(org.squashtest.Selenium2JUnit3WithMvnDependency) AS seleniumTest
+
+ASSERT seleniumResult IS success
+
+TEARDOWN :
+
+EXECUTE cleanup WITH seleniumServer AS ignoredResource

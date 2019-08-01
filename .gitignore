@@ -1,0 +1,11 @@
+
+\.idea/
+
+galaxia*pom\.xml
+
+selenium\.iml
+
+target/classes/org/squashtest/tf/junit/runner/
+
+target/squashTA/test-tree/
+
